@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessible Interactive Photo Gallery</title>
+  <style>
+    /* Basic Reset & Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    /* Display area for updating image info */
+    #display {
+      margin: 20px auto;
+      width: 80%;
+      height: 300px;
+      border: 2px dashed #ccc;
+      text-align: center;
+      line-height: 300px;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.3s ease;
+    }
+    
+    /* Gallery container */
+    #gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+    
+    /* Figure styling (each image block) */
+    #gallery figure {
+      margin: 0;
+      padding: 5px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      background: #fff;
+      width: 300px;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    #gallery figure:hover {
+      border-color: #ff6600;
+      transform: scale(1.02);
+    }
+    
+    #gallery img {
+      width: 100%;
+      border-radius: 5px;
+      display: block;
+    }
+    
+    #gallery figcaption {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body onload="pageLoaded()">
+  <header>
+    <h1>Accessible Interactive Photo Gallery</h1>
+    <p>Hover over or focus on an image below to display it here.</p>
+  </header>
+  
+  <!-- Display area for updated image info -->
+  <div id="display">Hover over an image to display here.</div>
+  
+  <!-- Gallery with six images -->
+  <div id="gallery">
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+1" alt="Beautiful sunrise over the mountains">
+      <figcaption>Beautiful sunrise over the mountains</figcaption>
+    </figure>
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+2" alt="City skyline at dusk">
+      <figcaption>City skyline at dusk</figcaption>
+    </figure>
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+3" alt="Serene lake surrounded by trees">
+      <figcaption>Serene lake surrounded by trees</figcaption>
+    </figure>
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+4" alt="Historic castle in the fog">
+      <figcaption>Historic castle in the fog</figcaption>
+    </figure>
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+5" alt="Vibrant autumn forest">
+      <figcaption>Vibrant autumn forest</figcaption>
+    </figure>
+    <figure onmouseover="upDate(this)" onmouseout="undo(this)" onfocus="focusUpdate(this)" onblur="blurUpdate(this)">
+      <img src="https://via.placeholder.com/600?text=Image+6" alt="Calm beach with turquoise water">
+      <figcaption>Calm beach with turquoise water</figcaption>
+    </figure>
+  </div>
+  
+  <script>
+    // Called when the page loads
+    function pageLoaded() {
+      console.log("Page loaded. Adding tabindex attributes to gallery figures.");
+      addTabIndexToFigures();
+    }
+    
+    // Add tabindex attribute to each figure for keyboard accessibility
+    function addTabIndexToFigures() {
+      var figures = document.querySelectorAll("#gallery figure");
+      for (var i = 0; i < figures.length; i++) {
+        figures[i].setAttribute("tabindex", "0");
+      }
+    }
+    
+    // Update display area on mouseover or focus
+    function upDate(figureElement) {
+      console.log("Event triggered on:", figureElement);
+      var displayDiv = document.getElementById("display");
+      // Get the alt text from the image and its src
+      var img = figureElement.querySelector("img");
+      var altText = img.alt;
+      var imgSrc = img.src;
+      displayDiv.innerHTML = altText;
+      displayDiv.style.backgroundImage = "url('" + imgSrc + "')";
+    }
+    
+    // Reset display area on mouseout or blur
+    function undo(figureElement) {
+      var displayDiv = document.getElementById("display");
+      displayDiv.innerHTML = "Hover over an image to display here.";
+      displayDiv.style.backgroundImage = "url('')";
+    }
+    
+    // When an element receives focus (keyboard access)
+    function focusUpdate(figureElement) {
+      console.log("Focus event triggered on:", figureElement);
+      // Use the same update as mouseover
+      upDate(figureElement);
+    }
+    
+    // When an element loses focus (keyboard access)
+    function blurUpdate(figureElement) {
+      console.log("Blur event triggered on:", figureElement);
+      // Use the same reset as mouseout
+      undo(figureElement);
+    }
+  </script>
+</body>
+</html>
